@@ -1,0 +1,138 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPBfBNufY9Ba9jgXSbAgXiJ"
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": 22,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "IGK8c-NfQA1J",
+        "outputId": "cdd09f6b-d6f8-459e-b776-7a60b4bda9df"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "food-com-recipes-and-user-interactions.zip: Skipping, found more recently modified local copy (use --force to force download)\n",
+            "Archive:  food-com-recipes-and-user-interactions.zip\n",
+            "replace /content/FOOD_RECIPES/PP_recipes.csv? [y]es, [n]o, [A]ll, [N]one, [r]ename: A\n",
+            "  inflating: /content/FOOD_RECIPES/PP_recipes.csv  \n",
+            "  inflating: /content/FOOD_RECIPES/PP_users.csv  \n",
+            "  inflating: /content/FOOD_RECIPES/RAW_interactions.csv  \n",
+            "  inflating: /content/FOOD_RECIPES/RAW_recipes.csv  \n",
+            "  inflating: /content/FOOD_RECIPES/ingr_map.pkl  \n",
+            "  inflating: /content/FOOD_RECIPES/interactions_test.csv  \n",
+            "  inflating: /content/FOOD_RECIPES/interactions_train.csv  \n",
+            "  inflating: /content/FOOD_RECIPES/interactions_validation.csv  \n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "import os\n",
+        "os.environ['KAGGLE_USERNAME'] = 'aluno123'\n",
+        "os.environ['KAGGLE_KEY'] = '29c185b2b1ee46269124e64f9e3e0859'\n",
+        "!kaggle datasets download -d shuyangli94/food-com-recipes-and-user-interactions\n",
+        "!unzip food-com-recipes-and-user-interactions.zip -d /content/FOOD_RECIPES"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Um arquivo não é csv, acabei não pegando pra olhar ainda e fui adiantando isso aqui\n",
+        "\n",
+        "# Especifica o diretório onde os arquivos CSV estão localizados\n",
+        "csv_directory = '/content/FOOD_RECIPES/'\n",
+        "\n",
+        "# Lista todos os arquivos CSV no diretório\n",
+        "csv_files = [f for f in os.listdir(csv_directory) if f.endswith('.csv')]\n",
+        "\n",
+        "# Cria variáveis separadas para cada DataFrame usando o nome do arquivo\n",
+        "for csv_file in csv_files:\n",
+        "    csv_path = os.path.join(csv_directory, csv_file)\n",
+        "    dataframe_name = os.path.splitext(csv_file)[0]\n",
+        "    globals()[dataframe_name] = pd.read_csv(csv_path)\n",
+        "\n",
+        "# Imprime os nomes dos DataFrames criados\n",
+        "for csv_file in csv_files:\n",
+        "    dataframe_name = os.path.splitext(csv_file)[0]\n",
+        "    print(dataframe_name)\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Zrq6XdYfXcz9",
+        "outputId": "e3a2b3aa-022e-44e9-fa78-ce68cc87b023"
+      },
+      "execution_count": 35,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "RAW_recipes\n",
+            "interactions_test\n",
+            "PP_recipes\n",
+            "RAW_interactions\n",
+            "PP_users\n",
+            "interactions_train\n",
+            "interactions_validation\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Dando uma olhada em quantas instancias tem se a gente for usar só receitas com menos de 30 minutos\n",
+        "\n",
+        "# Filtra as instâncias com 'minutes' maior que 30 e obtém os índices das linhas\n",
+        "indexes_to_drop = RAW_recipes[RAW_recipes['minutes'] > 30].index\n",
+        "\n",
+        "# Remove as linhas do DataFrame original usando os índices obtidos\n",
+        "RAW_recipesrapidas = RAW_recipes.drop(indexes_to_drop)\n",
+        "\n",
+        "num_instances = RAW_recipesrapidas.shape[0]\n",
+        "\n",
+        "# Exibe o número de instâncias\n",
+        "print(\"Número de instâncias:\", num_instances)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "AqG-hzSmf2M3",
+        "outputId": "720def01-e3b3-4600-81b1-3b19ad7a69bd"
+      },
+      "execution_count": 36,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Número de instâncias: 99053\n"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+Dataset/interactions_train.csv filter=lfs diff=lfs merge=lfs -text
+Dataset/interactions_validation.csv filter=lfs diff=lfs merge=lfs -text
+Dataset/PP_recipes.csv filter=lfs diff=lfs merge=lfs -text
+Dataset/PP_users.csv filter=lfs diff=lfs merge=lfs -text
+Dataset/RAW_interactions.csv filter=lfs diff=lfs merge=lfs -text
+Dataset/RAW_recipes.csv filter=lfs diff=lfs merge=lfs -text
+Dataset/ingr_map.pkl filter=lfs diff=lfs merge=lfs -text
+Dataset/interactions_test.csv filter=lfs diff=lfs merge=lfs -text
